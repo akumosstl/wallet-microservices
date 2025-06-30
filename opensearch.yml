@@ -1,0 +1,30 @@
+services:
+
+
+  opensearch:
+    image: opensearchproject/opensearch:2.13.0
+    restart: on-failure
+    environment:
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=AkX?@24bA98
+      - plugins.security.disabled=true
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - bankAccount
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:2.13.0
+    ports:
+      - 5601:5601
+    environment:
+      - OPENSEARCH_HOSTS=http://opensearch:9200
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
+    restart: on-failure
+    networks:
+      - bankAccount
+
+
+networks:
+  bankAccount:
